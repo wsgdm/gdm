@@ -1,0 +1,174 @@
+<mirror>  
+		  <id>alimaven</id>  
+		  <name>aliyun maven</name>  
+		  <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
+		  <mirrorOf>central</mirrorOf>          
+		</mirror> 
+		<mirror>
+			<id>ui</id>
+			<mirrorOf>central</mirrorOf>
+			<name>Human Readable Name for this Mirror.</name>
+			<url>http://uk.maven.org/maven2/</url>
+		</mirror>
+		<mirror>
+            <id>osc</id>
+            <mirrorOf>central</mirrorOf>
+            <url>http://maven.oschina.net/content/groups/public/</url>
+        </mirror>
+        <mirror>
+            <id>osc_thirdparty</id>
+            <mirrorOf>thirdparty</mirrorOf>
+            <url>http://maven.oschina.net/content/repositories/thirdparty/</url>
+</mirror>
+----------------------------------------------------------------------------------------------------------------------
+
+修改父pom的版本号                                                 xxxx
+在父pom中加入以下，然后执行命令:mvn versions:set -DnewVersion=1.1-SNAPSHOT
+<bulid>
+	<plugins>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>versions-maven-plugin</artifactId>
+			 <version>2.3</version>
+		</plugin>
+	</plugins>
+</bulid>
+
+常用插件
+i.https://maven.apache.org/plugins/ 
+ii.http://www.mojohaus.org/plugins.html 
+静态代码块检查<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <!-- <configLocation>${basedir}/springside-findbugs.xml</configLocation> -->
+                    <threshold>High</threshold>
+                    <effort>Default</effort>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <!-- findbugs xml输出路径-->
+                    <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+                </configuration>
+              </plugin>
+			  
+tomcat插件  <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <port>8080</port>
+                    <path>/</path>
+                </configuration>
+            </plugin>
+
+			<plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.3</version>
+                <configuration>
+                    <configurationFile>${project.basedir}/src/main/resources/mybatis/generatorConfig.xml</configurationFile>
+                </configuration>
+            </plugin>
+			
+生成源代码			
+			 <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+jar包可以单独运行   configuration传参数
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>gg.Test</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+	
+----------------------------------------------------------------------------------------------------------------------
+自定义插件 要想给自定义插件传参，在插件类里定义属性加上注解@parameter或者@parameter(property="xxx")[用在命令行传参-Dxxx=xxx];传参为List类型 在<configuration>中<options>
+https://maven.apache.org/guides/plugin/guide-java-plugin-development.html
+1.<packaging>maven-plugin</packaging>
+2.<dependencies>
+	<dependency>
+		<groupId>org.apache.maven</groupId>
+		<artifactId>maven-plugin-api</artifactId>
+		<version>3.5.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.maven.plugin-tools</groupId>
+		<artifactId>maven-plugin-annotations</artifactId>
+		<version>3.5</version>
+		<scope>provided</scope>
+	</dependency>
+  </dependencies>	
+
+ <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+                                               <goal>
+ 3.继承AbstracMojo类，重写execut方法，类上注解@Mojo(name="xxx",defaultPhase=LifecyclePhase.PACKAGE)
+----------------------------------------------------------------------------------------------------------------------
+在插件上
+<plugin>
+	.
+	.
+	<excutions>
+		<excution>
+			<phase>package</phase>  在package阶段运行插件
+			<goals>
+				<goal></goal>
+				<goal></goal>
+			</goals>
+		</excution>
+	</excutions>
+-----------------------------------------------------------------------------------------------------------------------
+mvn dependency:tree > d.txt 查看依赖包的关系
+-----------------------------------------------------------------------------------------------------------------------
+私服仓库http://books.sonatype.com/nexus-book/reference3/index.html 
+-----------------------------------------------------------------------------------------------------------------------
+archetype  模版化
+a)生成一个archetype
+i.mvn archetype:create-from-project
+ii.cd /target/generated-sources/archetype
+iii.mvn install
+b)从archetype创建项目 mvn archetype:generate -DarchetypeCatalog=local
