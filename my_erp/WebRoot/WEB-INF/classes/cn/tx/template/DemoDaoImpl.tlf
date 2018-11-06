@@ -1,0 +1,30 @@
+package cn.tx.dao.impl;
+
+import org.apache.commons.lang.StringUtils;
+
+import cn.tx.model.Demo;
+import cn.tx.query.DemoQuery;
+
+public class DemoDaoImpl extends BaseDaoImpl<Demo,DemoQuery> implements DemoDao{
+
+
+	@Override
+	public String creatHql(DemoQuery equery) {
+		
+		return null;
+
+	}
+
+	@Override
+	public String creatHqlCount(DemoQuery equery) {
+		
+		return null;
+		
+	}
+	
+	public String creat(DemoQuery equery){
+	
+		return null;
+	}
+
+}

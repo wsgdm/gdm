@@ -1,0 +1,43 @@
+package cn.tx.controller;
+
+import org.apache.struts2.ServletActionContext;
+
+import cn.tx.query.DemoQuery;
+import cn.tx.service.DemoService;
+import cn.tx.utils.Page;
+
+import com.opensymphony.xwork2.ActionContext;
+
+
+public class DemoAction extends BaseAction {
+
+
+	private DemoQuery demoQuery = new DemoQuery();
+	
+	private DemoService demoService;
+	
+	
+	
+
+
+	public DemoQuery getDemoQuery() {
+		return demoQuery;
+	}
+
+	public void setDemoQuery(DemoQuery demoQuery) {
+		this.demoQuery = demoQuery;
+	}
+
+	public void setDemoService(DemoService demoService) {
+		this.demoService = demoService;
+	}
+
+	public String demo_list(){
+
+		return SUCCESS;
+	}
+	
+	public String demo_input(){
+		return SUCCESS;
+	}
+}
