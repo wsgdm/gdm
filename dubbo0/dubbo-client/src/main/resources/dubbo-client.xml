@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="dubbo-client" owner="gdm"/>
+    <dubbo:registry address="zookeeper://123.207.250.214:2181"  file="d:/1"/>
+    <dubbo:reference id="Ghello" interface="com.gdm.dubbo.Hello" check="false" protocol="hessian" />
+    <dubbo:reference id="GGhello" interface="com.gdm.dubbo.MyHello" protocol="dubbo" mock="com.gdm.dubbo.Mymock" timeout="1"/>
+</beans>

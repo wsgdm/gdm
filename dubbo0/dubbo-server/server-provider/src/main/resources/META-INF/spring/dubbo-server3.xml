@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+
+    <dubbo:application name="dubbo-server" owner="gdm"/>
+    <dubbo:registry id="zk1" address="zookeeper://123.207.250.214:2181" />
+    <dubbo:protocol name="dubbo" port="20881"/>
+    <dubbo:protocol port="8080" name="hessian"/>
+
+        <dubbo:service interface="com.gdm.callback.CallBack" ref="MyCallBack" protocol="dubbo">
+            <dubbo:method name="sayMyHello">
+                <dubbo:argument type="com.gdm.callback.Listener" callback="true" />
+            </dubbo:method>
+        </dubbo:service>
+        <bean id="MyCallBack" class="com.gdm.callback.CallBackImpl"></bean>
+
+
+
+</beans>
